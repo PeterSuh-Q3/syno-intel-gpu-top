@@ -1,0 +1,6 @@
+#!/bin/sh
+# Daemonless diagnostic package: DSM needs this compatibility entry point.
+case "${1:-}" in
+  start|stop|status) exit 0 ;;
+  *) exit 1 ;;
+esac

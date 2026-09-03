@@ -20,12 +20,24 @@ modes used for direct diagnostics.
 ## Builder
 
 The lightweight builder starts with `dante90/syno-compiler:7.4`, copies only
-the Synology `/opt` toolchains, and installs IGT build prerequisites on a clean
-Debian layer. It does not inherit Mesa, LLVM, Rust, or Cargo from the AMD
-runtime builder.
+the representative `/opt/kvmx64` Synology toolchain, and installs IGT build
+prerequisites on a clean Debian layer. It does not inherit Mesa, LLVM, Rust,
+or Cargo from the AMD runtime builder.
 
 ```sh
 ./scripts/build-builder.sh 7.4
 ```
 
 This creates the local image `syno-intel-gpu-top-builder:7.4`.
+
+## Build
+
+```sh
+./scripts/fetch-sources.sh
+./scripts/build-builder.sh 7.4
+COMPILE_JOBS=12 ./scripts/run-spk-build.sh kvmx64 7.4 kernel5.10.55
+```
+
+The target dependency prefix is built separately and bundled below the
+package's own `target/` directory. DSM libraries and graphics drivers are
+never overwritten. Intel Xe is outside upstream `intel_gpu_top` support.

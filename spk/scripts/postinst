@@ -1,0 +1,16 @@
+#!/bin/sh
+set -eu
+RUNTIME=/var/packages/syno-intel-gpu-top/target
+case "$(uname -r)" in
+  5.10.55*) ;;
+  *) echo "Notice: kernel 4.4 package is diagnostic-only; PATH integration skipped." >&2; exit 0 ;;
+esac
+intel_card=""
+for card in /sys/class/drm/card[0-9]*; do
+  [ "$(cat "$card/device/vendor" 2>/dev/null || true)" = "0x8086" ] && { intel_card=$card; break; }
+done
+if [ -z "$intel_card" ]; then
+  echo "Notice: no Intel i915 card0 detected; PATH integration skipped." >&2
+  exit 0
+fi
+ln -s "$RUNTIME/bin/intel_gpu_top" /usr/bin/intel_gpu_top 2>/dev/null || true

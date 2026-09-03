@@ -1,0 +1,5 @@
+#!/bin/sh
+if [ "$(readlink /usr/bin/intel_gpu_top 2>/dev/null || true)" = "/var/packages/syno-intel-gpu-top/target/bin/intel_gpu_top" ]; then
+  rm -f /usr/bin/intel_gpu_top
+fi
+exit 0

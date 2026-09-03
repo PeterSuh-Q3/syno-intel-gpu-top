@@ -1,0 +1,2 @@
+#!/bin/sh
+exec /var/packages/syno-intel-gpu-top/target/bin/helper/intel-gpu-top-root "$@"

@@ -17,6 +17,7 @@ RUN rm -f /etc/apt/apt.conf.d/docker-clean \
       build-essential \
       ca-certificates \
       flex \
+      gperf \
       git \
       libglib2.0-dev \
       libdrm-dev \
@@ -29,6 +30,7 @@ RUN rm -f /etc/apt/apt.conf.d/docker-clean \
       libcairo2-dev \
       libudev-dev \
       libxml2-dev \
+      libtool \
       meson \
       ninja-build \
       pkg-config \

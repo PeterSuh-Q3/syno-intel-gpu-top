@@ -1,2 +1,4 @@
 # IGT source is fetched by exact annotated-tag target revision.
 igt-gpu-tools 5cdf45cac43700386fd6d48e59f494a35aa171d0
+pciutils 7c5bf915f87d8e4c62be66275c8e73a5f03fa5ee
+eudev 9e7c4e744b9e7813af9acee64b5e8549ea1fbaa3

@@ -22,15 +22,22 @@ test -f "$DEPS/lib/pkgconfig/glib-2.0.pc" || {
 }
 "$ROOT/scripts/generate-cross-file.sh" "$PLATFORM" "$DSM_VERSION" >/dev/null
 mkdir -p "$BUILD" "$STAGE"
-export PKG_CONFIG_SYSROOT_DIR="$DEPS"
+export PKG_CONFIG_SYSROOT_DIR=
 export PKG_CONFIG_LIBDIR="$DEPS/lib/pkgconfig:$DEPS/share/pkgconfig"
 export PKG_CONFIG_PATH="$PKG_CONFIG_LIBDIR"
-meson setup --wipe "$BUILD/igt" "$ROOT/sources/igt-gpu-tools" --cross-file "$CROSS_FILE" \
+export C_INCLUDE_PATH="$DEPS/include"
+export LDFLAGS="-L$DEPS/lib -Wl,-rpath,\$ORIGIN/../lib"
+if [[ -d "$BUILD/igt/meson-private" ]]; then
+  MESON_SETUP=(meson setup --wipe "$BUILD/igt" "$ROOT/sources/igt-gpu-tools")
+else
+  MESON_SETUP=(meson setup "$BUILD/igt" "$ROOT/sources/igt-gpu-tools")
+fi
+"${MESON_SETUP[@]}" --cross-file "$CROSS_FILE" \
   --prefix="$PREFIX" -Dtests=disabled -Ddocs=disabled -Dman=disabled \
   -Dchamelium=disabled -Doverlay=disabled -Dxe_driver=disabled -Dlibdrm_drivers=intel
 ninja -C "$BUILD/igt" -j"$JOBS" tools/intel_gpu_top
 install -Dm755 "$BUILD/igt/tools/intel_gpu_top" "$STAGE$PREFIX/bin/intel_gpu_top.real"
 mkdir -p "$STAGE$PREFIX/lib"
-find "$DEPS/lib" -maxdepth 1 -type f -name '*.so*' -exec cp -a {} "$STAGE$PREFIX/lib/" \;
+find "$DEPS/lib" -maxdepth 1 \( -type f -o -type l \) -name '*.so*' -exec cp -a {} "$STAGE$PREFIX/lib/" \;
 "$TOOLCHAIN/x86_64-pc-linux-gnu-strip" "$STAGE$PREFIX/bin/intel_gpu_top.real" || true
 "$ROOT/scripts/refresh-spk-stage.sh" "$STAGE" "$KERNEL_FLAVOR"

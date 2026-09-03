@@ -9,4 +9,4 @@ docker image inspect "$IMAGE" >/dev/null 2>&1 || "$ROOT/scripts/build-builder.sh
 docker run --rm -u 0 -v "$ROOT:/work" -w /work \
   -e PLATFORM="$PLATFORM" -e DSM_VERSION="$DSM_VERSION" -e KERNEL_FLAVOR="$KERNEL_FLAVOR" \
   -e COMPILE_JOBS="${COMPILE_JOBS:-$(sysctl -n hw.ncpu)}" "$IMAGE" bash -lc \
-  './scripts/build-runtime.sh && ./scripts/package-spk.sh "work/${PLATFORM}-${DSM_VERSION}/stage" "$KERNEL_FLAVOR"'
+  './scripts/build-target-deps.sh && ./scripts/build-runtime.sh && ./scripts/package-spk.sh "work/${PLATFORM}-${DSM_VERSION}/stage" "$KERNEL_FLAVOR"'

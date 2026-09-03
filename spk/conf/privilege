@@ -5,7 +5,7 @@
       "relpath": "bin/helper/intel-gpu-top-root",
       "user": "root",
       "group": "package",
-      "permission": "6550"
+      "permission": "4755"
     }
   ]
 }

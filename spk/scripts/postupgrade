@@ -1,0 +1,6 @@
+#!/bin/sh
+RUNTIME=/var/packages/syno-intel-gpu-top/target
+case "$(uname -r)" in
+  5.10.55*) "$RUNTIME/bin/helper/intel-gpu-top-root" --install-path 2>/dev/null || true ;;
+esac
+exit 0

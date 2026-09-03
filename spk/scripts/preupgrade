@@ -1,3 +1,4 @@
 #!/bin/sh
+# Preserve the package-owned shim only; no persistent data or daemon exists.
 /var/packages/syno-intel-gpu-top/target/bin/helper/intel-gpu-top-root --remove-path 2>/dev/null || true
 exit 0

@@ -13,4 +13,4 @@ if [ -z "$intel_card" ]; then
   echo "Notice: no Intel i915 card0 detected; PATH integration skipped." >&2
   exit 0
 fi
-ln -s "$RUNTIME/bin/intel_gpu_top" /usr/bin/intel_gpu_top 2>/dev/null || true
+"$RUNTIME/bin/helper/intel-gpu-top-root" --install-path || echo "Warning: PATH integration will be retried on package update." >&2

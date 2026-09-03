@@ -21,4 +21,5 @@ checksum=$(md5sum "$ASSEMBLY/package.tgz" | awk '{print $1}')
 extractsize=$(du -sk "$STAGE/var/packages/$PACKAGE" | awk '{print $1}')
 printf 'extractsize="%s"\ncreate_time="%s"\nchecksum="%s"\n' "$extractsize" "$(date +%Y%m%d-%H:%M:%S)" "$checksum" >> "$ASSEMBLY/INFO"
 mkdir -p "$OUT"
-tar -C "$ASSEMBLY" -cf "$OUT/${PACKAGE}-0.1.0-x86_64-${KERNEL_FLAVOR}.spk" INFO package.tgz scripts conf PACKAGE_ICON.PNG PACKAGE_ICON_256.PNG
+VERSION=$(sed -n 's/^version="\([^"]*\)"$/\1/p' "$ASSEMBLY/INFO" | head -n 1)
+tar -C "$ASSEMBLY" -cf "$OUT/${PACKAGE}-${VERSION}-x86_64-${KERNEL_FLAVOR}.spk" INFO package.tgz scripts conf PACKAGE_ICON.PNG PACKAGE_ICON_256.PNG

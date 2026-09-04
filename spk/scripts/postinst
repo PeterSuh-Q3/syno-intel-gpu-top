@@ -5,12 +5,8 @@ case "$(uname -r)" in
   5.10.55*) ;;
   *) echo "Notice: kernel 4.4 package is diagnostic-only; PATH integration skipped." >&2; exit 0 ;;
 esac
-intel_card=""
-for card in /sys/class/drm/card[0-9]*; do
-  [ "$(cat "$card/device/vendor" 2>/dev/null || true)" = "0x8086" ] && { intel_card=$card; break; }
-done
-if [ -z "$intel_card" ]; then
-  echo "Notice: no Intel i915 card0 detected; PATH integration skipped." >&2
-  exit 0
-fi
+# The CLI may be installed before the i915 module/device is available, and is
+# also useful for later hardware changes.  Create its fixed, package-owned
+# PATH shim unconditionally; the utility itself reports a clear error if no
+# Intel DRM device exists when it is invoked.
 "$RUNTIME/bin/helper/intel-gpu-top-root" --install-path || echo "Warning: PATH integration will be retried on package update." >&2

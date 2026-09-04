@@ -41,3 +41,8 @@ COMPILE_JOBS=12 ./scripts/run-spk-build.sh kvmx64 7.4 kernel5.10.55
 The target dependency prefix is built separately and bundled below the
 package's own `target/` directory. DSM libraries and graphics drivers are
 never overwritten. Intel Xe is outside upstream `intel_gpu_top` support.
+
+The package is intentionally daemonless. Package Center can show it as
+stopped because there is no background service to run; the `intel_gpu_top`
+command remains available after installation. On kernel 5.10.55 its PATH shim
+is installed even before an Intel DRM device is present.

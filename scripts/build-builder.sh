@@ -13,6 +13,6 @@ fi
 
 docker build \
   --build-arg "DSM_VERSION=$DSM_VERSION" \
-  --tag "syno-intel-gpu-top-builder:$DSM_VERSION" \
+  --tag "dante90/syno-intel-gpu-top-builder:$DSM_VERSION" \
   --file "$ROOT/docker/Dockerfile" \
   "$ROOT"

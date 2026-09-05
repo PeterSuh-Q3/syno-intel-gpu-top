@@ -28,7 +28,7 @@ or Cargo from the AMD runtime builder.
 ./scripts/build-builder.sh 7.4
 ```
 
-This creates the local image `syno-intel-gpu-top-builder:7.4`.
+This creates the Docker Hub-tagged image `dante90/syno-intel-gpu-top-builder:7.4`.
 
 ## Build
 

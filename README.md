@@ -30,6 +30,8 @@ or Cargo from the AMD runtime builder.
 
 This creates the Docker Hub-tagged image `dante90/syno-intel-gpu-top-builder:7.4`.
 
+Each build also creates `syno-intel-gpu-top-runtime-*-kernel5.10.55.tar.gz` and a sidecar `*.manifest.json` in `dist/`.  The runtime bundle is for controlled Manager embedding: it contains `intel_gpu_top.real`, its private `libpci`/`libudev` libraries, and archive/file SHA-256 verification data. The SPK-only privileged launcher is deliberately excluded.
+
 ## Build
 
 ```sh

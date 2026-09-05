@@ -46,3 +46,15 @@ The package is intentionally daemonless. Package Center can show it as
 stopped because there is no background service to run; the `intel_gpu_top`
 command remains available after installation. On kernel 5.10.55 its PATH shim
 is installed even before an Intel DRM device is present.
+
+## License
+
+The Synology SPK packaging, build scripts, and DSM integration in this
+repository are licensed under the [MIT License](LICENSE).
+
+The resulting package builds and bundles upstream third-party components,
+including IGT's `intel_gpu_top`, libdrm, eudev, and pciutils. Those components
+remain subject to their respective upstream licenses; this repository's MIT
+license does not replace or supersede their notices or terms. IGT's pinned
+source revision and its original `COPYING` file are recorded in
+[`build/sources.lock`](build/sources.lock).

@@ -3,7 +3,7 @@ set -eu
 RUNTIME=/var/packages/syno-intel-gpu-top/target
 case "$(uname -r)" in
   5.10.55*) ;;
-  *) echo "Notice: kernel 4.4 package is diagnostic-only; PATH integration skipped." >&2; exit 0 ;;
+  *) echo "Notice: intel_gpu_top requires i915 PMU support (Linux 4.16+); PATH integration skipped." >&2; exit 0 ;;
 esac
 # The CLI may be installed before the i915 module/device is available, and is
 # also useful for later hardware changes.  Create its fixed, package-owned

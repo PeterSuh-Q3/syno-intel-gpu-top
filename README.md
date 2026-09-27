@@ -14,33 +14,38 @@ modes used for direct diagnostics.
   system-wide PMU counters require privileged `perf_event_open` access on DSM.
 - The launcher will allow only display and sampling arguments. Root file-output
   options are deliberately excluded.
-- Kernel 4.4 builds, if published, will be diagnostic/experimental and will
-  not register a global PATH command automatically.
+- IGT's `intel_gpu_top` requires Linux 4.16+ for i915 PMU telemetry. DSM
+  kernel 4.4.302 is not a supported telemetry target; no K4-specific binary
+  flavor is built.
 
 ## Builder
 
-The lightweight builder starts with `dante90/syno-compiler:7.4`, copies only
-the representative `/opt/kvmx64` Synology toolchain, and installs IGT build
-prerequisites on a clean Debian layer. It does not inherit Mesa, LLVM, Rust,
-or Cargo from the AMD runtime builder.
+The builder uses Debian 12's native x86_64 GCC and does not download or use a
+Synology platform toolchain. The runtime ABI is checked against the DSM 7.4
+glibc 2.36 baseline before creating the runtime bundle. It does not inherit
+Mesa, LLVM, Rust, or Cargo from the AMD runtime builder.
 
 ```sh
-./scripts/build-builder.sh 7.4
+./scripts/build-builder.sh
 ```
 
-This creates the Docker Hub-tagged image `dante90/syno-intel-gpu-top-builder:7.4`.
+This creates the local image `dante90/syno-intel-gpu-top-builder:debian12-native`.
 
-Each build also creates `syno-intel-gpu-top-runtime-*-kernel5.10.55.tar.gz` and a sidecar `*.manifest.json` in `dist/`.  The runtime bundle is for controlled Manager embedding: it contains `intel_gpu_top.real`, its private `libpci`/`libudev` libraries, and archive/file SHA-256 verification data. The SPK-only privileged launcher is deliberately excluded.
+Each build creates one `syno-intel-gpu-top-<version>-x86_64.spk` and one
+`syno-intel-gpu-top-runtime-<version>-x86_64.tar.gz`, plus a checksum sidecar
+and per-file manifest in `dist/`. The runtime bundle contains
+`intel_gpu_top.real` and its private `libpci`/`libudev` libraries. The
+SPK-only privileged launcher is deliberately excluded.
 
 ## Build
 
 ```sh
 ./scripts/fetch-sources.sh
-./scripts/build-builder.sh 7.4
-COMPILE_JOBS=12 ./scripts/run-spk-build.sh kvmx64 7.4 kernel5.10.55
+./scripts/build-builder.sh
+COMPILE_JOBS=12 ./scripts/run-spk-build.sh
 ```
 
-The target dependency prefix is built separately and bundled below the
+The native x86_64 dependency prefix is built separately and bundled below the
 package's own `target/` directory. DSM libraries and graphics drivers are
 never overwritten. Intel Xe is outside upstream `intel_gpu_top` support.
 

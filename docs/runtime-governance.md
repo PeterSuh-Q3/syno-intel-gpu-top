@@ -1,21 +1,19 @@
 # Intel GPU Top runtime governance
 
-Status: design and audit, 2026-09-27. This document defines a single,
-centrally published `intel_gpu_top` userspace runtime for downstream packages.
-It does not authorize a K4 compatibility claim or remove the Synology compiler
-until the ABI validation gate below passes.
+Status: native x86_64 build implemented for v0.1.3, 2026-09-27. This document
+defines a single, centrally published `intel_gpu_top` userspace runtime for
+downstream packages. It does not authorize a K4 compatibility claim.
 
 ## Findings from the current source and artifacts
 
 - `intel_gpu_top` is an x86_64 userspace executable, not a kernel module. The
-  current `run-spk-build.sh`, `build-target-deps.sh`, `build-runtime.sh`, and
-  `generate-cross-file.sh` select the `kvmx64` Synology toolchain. The generated
-  Meson host machine is `x86_64`; no kernel headers or kernel-flavor-specific
-  compile flags are used.
-- `KERNEL_FLAVOR` currently changes the staged marker, package description,
-  output filename, and runtime manifest. It does not change the compiled
-  `intel_gpu_top` or target dependency build inputs. Thus K4/K5 labels do not
-  establish distinct binaries or kernel compatibility.
+  v0.1.3 build path uses Debian 12's native x86_64 compiler; it does not
+  download or invoke the Synology `kvmx64` toolchain. No kernel headers or
+  kernel-flavor-specific compile flags are used.
+- Before v0.1.3, `KERNEL_FLAVOR` changed the staged marker, package
+  description, output filename, and runtime manifest without changing the
+  compiled `intel_gpu_top` or target dependency inputs. Thus the old K4/K5
+  labels did not establish distinct binaries or kernel compatibility.
 - The pinned IGT v2.5 source explicitly reports that i915 PMU monitoring
   requires Linux kernel 4.16 or newer (`tools/intel_gpu_top.c`, around line
   2770). DSM 4.4.302 is below this minimum; a second K4 binary cannot add the
@@ -58,25 +56,15 @@ until the ABI validation gate below passes.
    new release version when the runtime, packaging, or manifest changes; do not
    rebuild/release identical payloads as separate K4 and K5 versions.
 
-## Can the Synology kvmx64 cross-compiler be removed?
+## Native compiler policy
 
-`kvmx64` is being used as a representative x86_64 **toolchain**, not because
-`intel_gpu_top` is linked to a K4 kernel. Removing it is plausible because the
-program is userspace-only and the existing builder already uses Debian 12 for
-its native build tools. However, a generic build must not be promoted solely
-because it compiles on x86_64: runtime compatibility depends on glibc symbol
-versions, the private libpci/libudev ABI, and the Synology execution
-environment.
-
-Recommended transition: build a candidate with Debian 12's native x86_64 GCC
-in a clean builder, then compare ELF architecture, dynamic dependencies,
-RPATH, and maximum `GLIBC_*` symbol against the DSM 7.4 x86_64 baseline. Install
-and exercise that exact candidate on a K5 DSM Intel-iGPU system (CLI help,
-one-shot JSON, and interactive TUI under the package helper). Only after these
-checks pass should the Dockerfile drop the `/opt/kvmx64` toolchain layer and
-the package record itself as a generic x86_64 build. If any ABI check fails,
-keep the Synology toolchain while still publishing only one kernel-independent
-runtime artifact.
+The `kvmx64` Synology cross-compiler has been removed from the build image and
+scripts. Debian 12 native x86_64 GCC is used, while `create-runtime-bundle.sh`
+rejects ELF files whose highest glibc symbol exceeds 2.36. This ABI gate is a
+build-time compatibility check, not a substitute for testing the exact SPK on
+a DSM 7.4 Intel-iGPU system (CLI help, one-shot JSON, and interactive TUI under
+the package helper). The package's `arch` metadata may still list `kvmx64`:
+that is an install-architecture declaration, not use of the kvmx64 compiler.
 
 ## Downstream consumers and migration
 

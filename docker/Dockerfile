@@ -1,12 +1,4 @@
-ARG DSM_VERSION=7.4
-FROM dante90/syno-compiler:${DSM_VERSION} AS synology-toolchain
-
 FROM debian:12-slim
-
-# intel_gpu_top is a portable x86_64 userspace tool. Keep only the representative
-# kvmx64 Synology toolchain rather than copying every platform under /opt.
-# This avoids a multi-gigabyte duplicate toolchain layer in Docker Desktop.
-COPY --from=synology-toolchain /opt/kvmx64 /opt/kvmx64
 
 RUN rm -f /etc/apt/apt.conf.d/docker-clean \
     && apt-get update \

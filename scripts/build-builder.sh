@@ -1,8 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-DSM_VERSION=${1:-7.4}
-[[ "$DSM_VERSION" == "7.4" ]] || { echo 'Supported builder profile: 7.4' >&2; exit 2; }
 ROOT=$(cd "$(dirname "$0")/.." && pwd)
 
 # Docker Desktop keeps its credential helper inside the app bundle on macOS;
@@ -12,7 +10,6 @@ if [[ -x /Applications/Docker.app/Contents/Resources/bin/docker-credential-deskt
 fi
 
 docker build \
-  --build-arg "DSM_VERSION=$DSM_VERSION" \
-  --tag "dante90/syno-intel-gpu-top-builder:$DSM_VERSION" \
+  --tag "dante90/syno-intel-gpu-top-builder:debian12-native" \
   --file "$ROOT/docker/Dockerfile" \
   "$ROOT"

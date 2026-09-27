@@ -2,15 +2,12 @@
 set -euo pipefail
 
 ROOT=${ROOT:-/work}
-PLATFORM=${PLATFORM:-kvmx64}
-DSM_VERSION=${DSM_VERSION:-7.4}
-TOOLCHAIN=${TOOLCHAIN_BIN:-/opt/${PLATFORM}/bin}
-PREFIX="$ROOT/work/deps/${PLATFORM}-${DSM_VERSION}"
-BUILD="$ROOT/work/deps-build/${PLATFORM}-${DSM_VERSION}"
+PREFIX="$ROOT/work/deps/x86_64-native"
+BUILD="$ROOT/work/deps-build/x86_64-native"
 JOBS=${COMPILE_JOBS:-$(nproc)}
-CC="$TOOLCHAIN/x86_64-pc-linux-gnu-gcc"
-AR="$TOOLCHAIN/x86_64-pc-linux-gnu-ar"
-RANLIB="$TOOLCHAIN/x86_64-pc-linux-gnu-ranlib"
+CC=${CC:-gcc}
+AR=${AR:-ar}
+RANLIB=${RANLIB:-ranlib}
 
 for source in eudev pciutils; do test -d "$ROOT/sources/$source" || { echo "missing source: $source" >&2; exit 1; }; done
 rm -rf "$PREFIX" "$BUILD"
@@ -29,7 +26,7 @@ popd >/dev/null
 
 # pciutils supplies libpci only; DNS, compressed IDs, HWDB, and kmod are off.
 cp -a "$ROOT/sources/pciutils" "$BUILD/pciutils"
-make -C "$BUILD/pciutils" -j"$JOBS" CROSS_COMPILE="${TOOLCHAIN}/x86_64-pc-linux-gnu-" \
+make -C "$BUILD/pciutils" -j"$JOBS" \
   SHARED=yes ZLIB=no DNS=no HWDB=no LIBKMOD=no PREFIX="$PREFIX" lib/libpci.so.3.13.0 >/dev/null
 install -Dm755 "$BUILD/pciutils/lib/libpci.so.3.13.0" "$PREFIX/lib/libpci.so.3.13.0"
 ln -sf libpci.so.3.13.0 "$PREFIX/lib/libpci.so.3"

@@ -1,12 +1,9 @@
 #!/bin/sh
 set -eu
 RUNTIME=/var/packages/syno-intel-gpu-top/target
-case "$(uname -r)" in
-  5.10.55*) ;;
-  *) echo "Notice: intel_gpu_top requires i915 PMU support (Linux 4.16+); PATH integration skipped." >&2; exit 0 ;;
-esac
 # The CLI may be installed before the i915 module/device is available, and is
 # also useful for later hardware changes.  Create its fixed, package-owned
-# PATH shim unconditionally; the utility itself reports a clear error if no
-# Intel DRM device exists when it is invoked.
+# PATH shim on both K4 and K5; a PMU-enabled i915 backport can provide
+# telemetry on K4. The utility reports an error at execution time if the
+# required Intel DRM/PMU interface is absent.
 "$RUNTIME/bin/helper/intel-gpu-top-root" --install-path || echo "Warning: PATH integration will be retried on package update." >&2

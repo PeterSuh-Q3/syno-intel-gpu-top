@@ -9,14 +9,18 @@ modes used for direct diagnostics.
 
 ## Runtime policy
 
-- DSM kernel 5.10 with an i915 PMU is the supported profile.
+- DSM kernel 5.10 with an i915 PMU is the default standalone-SPK profile.
 - The package exposes a narrow DSM-managed setuid launcher because i915
   system-wide PMU counters require privileged `perf_event_open` access on DSM.
 - The launcher will allow only display and sampling arguments. Root file-output
   options are deliberately excluded.
-- IGT's `intel_gpu_top` requires Linux 4.16+ for i915 PMU telemetry. DSM
-  kernel 4.4.302 is not a supported telemetry target; no K4-specific binary
-  flavor is built.
+- Upstream IGT expects Linux 4.16+ for i915 PMU telemetry on an ordinary
+  kernel. The same v0.1.3 binary was also tested successfully on DSM 7.4.1 /
+  kernel 4.4.302 with the stabilized Linux 5.4-based i915/PMU backport. No
+  K4-specific binary flavor is built. Current source registers the global
+  PATH command on both K4 and K5; the published v0.1.3 SPK predates this
+  packaging cleanup. See
+  [runtime governance](docs/runtime-governance.md).
 
 ## Builder
 
@@ -51,8 +55,9 @@ never overwritten. Intel Xe is outside upstream `intel_gpu_top` support.
 
 The package is intentionally daemonless. Package Center can show it as
 stopped because there is no background service to run; the `intel_gpu_top`
-command remains available after installation. On kernel 5.10.55 its PATH shim
-is installed even before an Intel DRM device is present.
+command remains available after installation. The current source installs its
+PATH shim on K4 and K5 even before an Intel DRM device is present; actual
+telemetry still requires an i915 PMU.
 
 ## License
 

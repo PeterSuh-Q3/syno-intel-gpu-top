@@ -31,7 +31,7 @@ ln -s intel_gpu_top.real "$WORK/runtime/bin/intel_gpu_top"
 cp -a "$SOURCE/lib/." "$WORK/runtime/lib/"
 
 {
-  printf '{\n  "package": "%s",\n  "version": "%s",\n  "architecture": "x86_64",\n  "source": {"igt_version": "%s", "igt_revision": "%s"},\n  "builder": {"image": "Debian 12 native x86_64", "gcc": "%s"},\n  "minimum_kernel": "Linux 4.16+ with i915 PMU",\n  "glibc_requirement": "GLIBC_%s",\n  "validated_glibc_limit": "GLIBC_2.36",\n  "files": [\n' "$PACKAGE" "$VERSION" "$IGT_VERSION" "$IGT_REVISION" "$GCC_VERSION" "$GLIBC_MAX"
+  printf '{\n  "package": "%s",\n  "version": "%s",\n  "architecture": "x86_64",\n  "source": {"igt_version": "%s", "igt_revision": "%s"},\n  "builder": {"image": "Debian 12 native x86_64", "gcc": "%s"},\n  "kernel_requirement": "i915 PMU (upstream Linux 4.16+ or a PMU-enabled backport)",\n  "glibc_requirement": "GLIBC_%s",\n  "validated_glibc_limit": "GLIBC_2.36",\n  "files": [\n' "$PACKAGE" "$VERSION" "$IGT_VERSION" "$IGT_REVISION" "$GCC_VERSION" "$GLIBC_MAX"
   first=1
   while IFS= read -r file; do
     rel=${file#"$WORK/runtime/"}

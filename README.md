@@ -15,11 +15,10 @@ modes used for direct diagnostics.
 - The launcher will allow only display and sampling arguments. Root file-output
   options are deliberately excluded.
 - Upstream IGT expects Linux 4.16+ for i915 PMU telemetry on an ordinary
-  kernel. The same v0.1.3 binary was also tested successfully on DSM 7.4.1 /
+  kernel. The v0.1.3 binary was tested successfully on DSM 7.4.1 /
   kernel 4.4.302 with the stabilized Linux 5.4-based i915/PMU backport. No
-  K4-specific binary flavor is built. Current source registers the global
-  PATH command on both K4 and K5; the published v0.1.3 SPK predates this
-  packaging cleanup. See
+  K4-specific binary flavor is built. The v0.1.4 SPK registers the global
+  PATH command on both K4 and K5. See
   [runtime governance](docs/runtime-governance.md).
 
 ## Builder

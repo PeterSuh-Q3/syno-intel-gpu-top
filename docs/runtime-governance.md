@@ -1,21 +1,21 @@
 # Intel GPU Top runtime governance
 
-## Current source of truth (v0.1.3)
+## Current source of truth (v0.1.4)
 
-[`syno-intel-gpu-top` v0.1.3](https://github.com/PeterSuh-Q3/syno-intel-gpu-top/releases/tag/v0.1.3)
+[`syno-intel-gpu-top` v0.1.4](https://github.com/PeterSuh-Q3/syno-intel-gpu-top/releases/tag/v0.1.4)
 publishes one native x86_64 `intel_gpu_top` runtime, its private libraries,
 and a manifest with per-file SHA-256 hashes. The Debian 12 build does not use
 the Synology kvmx64 cross-toolchain. The SPK and runtime filenames do not
 encode a DSM platform or kernel flavor. Its shared archive is
-`syno-intel-gpu-top-runtime-0.1.3-x86_64.tar.gz` (SHA-256
-`5131345fe8af370b4fcf00bcc1b1b84dbf32db6e652f2e7cf4fa41af5d469ca3`).
+`syno-intel-gpu-top-runtime-0.1.4-x86_64.tar.gz` (SHA-256
+`46cd5e995193b2224bea1edf4a5960906d4856468b423f38cb4b63e8ad06b4f4`).
 The standalone SPK owns the privileged launcher and PATH policy; the shared
 runtime archive does not include that launcher.
 
 | Consumer | Current integration |
 | --- | --- |
-| `mshell-manager` | Pins the v0.1.3 archive and checks archive plus manifest file hashes before private staging. |
-| `syno-gpu-monitor` Intel 0.3.2 | Pins the v0.1.3 archive and checks archive plus manifest file hashes before private staging. |
+| `mshell-manager` | Remains pinned to the v0.1.3 archive and checks archive plus manifest file hashes before private staging. |
+| `syno-gpu-monitor` Intel 0.3.2 | Remains pinned to the v0.1.3 archive and checks archive plus manifest file hashes before private staging. |
 
 Consumers should pin the exact release URL and checksum, verify every file in
 the manifest, and preserve the private libraries beside the executable. A

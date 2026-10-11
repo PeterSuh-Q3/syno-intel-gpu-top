@@ -17,8 +17,9 @@ modes used for direct diagnostics.
 - Upstream IGT expects Linux 4.16+ for i915 PMU telemetry on an ordinary
   kernel. The v0.1.3 binary was tested successfully on DSM 7.4.1 /
   kernel 4.4.302 with the stabilized Linux 5.4-based i915/PMU backport. No
-  K4-specific binary flavor is built. The v0.1.4 SPK registers the global
-  PATH command on both K4 and K5. See
+  K4-specific binary flavor is built. The v0.1.5 SPK gives Intel GPU Top a
+  blue graph icon so it is visually distinct from AMDGPU Top in Package Center.
+  It retains the global PATH command on both K4 and K5 registered by v0.1.4. See
   [runtime governance](docs/runtime-governance.md).
 
 ## Builder

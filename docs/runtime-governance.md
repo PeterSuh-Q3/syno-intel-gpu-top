@@ -2,9 +2,10 @@
 
 ## Current source of truth (v0.1.4)
 
-[`syno-intel-gpu-top` v0.1.4](https://github.com/PeterSuh-Q3/syno-intel-gpu-top/releases/tag/v0.1.4)
-publishes one native x86_64 `intel_gpu_top` runtime, its private libraries,
-and a manifest with per-file SHA-256 hashes. The Debian 12 build does not use
+[`syno-intel-gpu-top` v0.1.5](https://github.com/PeterSuh-Q3/syno-intel-gpu-top/releases/tag/v0.1.5)
+publishes the standalone SPK with a distinct blue graph icon. It uses the
+unchanged v0.1.4 native x86_64 runtime, its private libraries, and the existing
+manifest with per-file SHA-256 hashes. The Debian 12 build does not use
 the Synology kvmx64 cross-toolchain. The SPK and runtime filenames do not
 encode a DSM platform or kernel flavor. Its shared archive is
 `syno-intel-gpu-top-runtime-0.1.4-x86_64.tar.gz` (SHA-256
